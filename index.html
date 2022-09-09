@@ -3,7 +3,111 @@
   <head>
     <title>DGX Tech Stack Interview - Quincy Miller</title>
   </head>
-  <body>
-    <h1>My Recommended Tech Stack</h1>
+  <body style="background-color: grey">
+    <h1 style="font-size: 50px">My Recommended Tech Stack</h1>
+    <img src="DGX Stack Flowchart.png" alt="Flowchart goes here" />
+    <h2>The REM Stack</h2>
+    <h3>React Native, Expo, MongoDB</h3>
+    <p style="font-size: 20px">
+      In order to create such an app where researchers can snap photos with or
+      without an internet connection, and then display those images on a
+      seperate website with an overlayed map, specific technologies can be used
+      to solve many of these challenges during the development process.
+    </p>
+    <br />
+    <p style="font-size: 20px">
+      To explain this stack, I wanted to go over each technology and best
+      explain what problem it helps to solve, starting with React Native and
+      Expo. To start, React Native is an easy choice when it comes to developing
+      the frontend of our mobile application. With React Native, we won't have
+      to develop two seperate code bases for both Android and iOS. Additionally,
+      Expo is a very powerful toolkit that goes hand in hand with React Native.
+      With Expo, the development of the application should be much smoother, and
+      Expo provides us with specific components that could help develop certain
+      features necessary to build the mobile app. For example, Expo comes with
+      both a
+      <a href="https://docs.expo.dev/versions/latest/sdk/camera/"
+        >camera component</a
+      >
+      and a module for reading
+      <a href="https://docs.expo.dev/versions/latest/sdk/location/"
+        >geolocation data</a
+      >
+      from the device. These tools could possibly help with taking the pictures
+      of certain POIs and automatically saving those pictures with geolocation
+      data to then be handled by our backend. Lastly, both React Native and Expo
+      support web-application development using React DOM, meaning we could
+      likely use the same codebase for developing the webpage where the location
+      data will be displayed.
+    </p>
+    <br />
+    <p style="font-size: 20px">
+      For the business logic, I wanted to find technologies to keep the app
+      lightweight yet scalable, as the features described are not too extensive
+      and shouldn't require a large and cumbersome backend. To solve mapping, I
+      would continue to use MapBox. Mapbox GL is such a powerful tool that is
+      the go to when it comes to any location-based application or feature. It
+      allows for easily overlapping the locations of the POIs on any map we
+      desire, or an entirely generated map using vector tiles. MongoDB Realm
+      will be the key in handling backend logic for our application. It is a set
+      of fully-managed application development services that will help solve
+      multiple problems the mobile app may face. One of its main use cases is
+      Realm Database, giving our app local storage to save photo data when the
+      app is offline. In connection with MongoDB Atlas API and Atlas Device
+      Sync, we can use
+      <a href="https://www.mongodb.com/docs/realm/introduction/">Realm</a> to
+      automatically sync data taken from the mobile app to our webpage without
+      bothering the user. Realm can also use Atlas App Services to query our
+      MongoDB Atlas database to direct data to the webpage. This means the
+      researchers should not have to worry about an internet connection when
+      taking photos of POIs, and we should still be able to use Realm in the
+      backend of our webpage for deliver data to Mapbox from a MongoDB Atlas
+      cluster.
+    </p>
+    <br />
+    <p style="font-size: 20px">
+      To handle login and authentication. Realm and Atlas App Services also
+      provides built-in user management. Since we are building a private and
+      secure app specifically for researchers, we could use JSON Web Tokens as
+      the format for our authentication tokens and OAuth2 as the protocol to
+      ensure the researchers login data is secure. Luckily, Realm supports both
+      <a
+        href="https://www.mongodb.com/docs/atlas/app-services/authentication/custom-jwt/#std-label-custom-jwt-authentication"
+        >JWT authentication</a
+      >
+      and OAuth2.
+    </p>
+    <br />
+    <p style="font-size: 20px">
+      Finally, to store the data of the uploaded POIs I would recommend using
+      MongoDB Atlas specifically. It is very similar to MongoDB itself but keeps
+      our application lightweight without us having to manage it extensively.
+      Additionally, our Realm backend can connect direcly with our MongoDB Atlas
+      cluster in order to both send data from the mobile app to the database,
+      and fetch the data to deliver to Mapbox and display on the webpage. To be
+      specific, for the backend of the webapp, Realm's Web SDK will allow us to
+      query the MongoDB database which is all we should need it to do, the rest
+      of the functionality I described earlier is specific to the mobile apps.
+      Here is an example of Realm being used together with Mapbox:
+      <a
+        href="https://www.mongodb.com/developer/products/mongodb/searching-nearby-points-interest-mapbox/"
+        >Searching for POIs with MongoDB and Mapbox.</a
+      >
+    </p>
+    <br />
+    <p style="font-size: 20px">
+      In summary to describe the flow of data and how it might look, I wanted to
+      start with what happens when a researcher snaps a photo of a POI.
+      Initially, that data will be stored likely as a pair of the image and its
+      metadata (such as the location). This data will be stored in the mobile
+      apps local Realm database until an internet connection is re-established.
+      Once, the connection is re-established, that data will be transferred by
+      Realm to our MongoDB Atlas cluster. There, the data will be stored in a
+      document or collection as the image paired with its associated GeoJSON
+      data. Realm then queries the Atlas cluster for the GeoJSON data which is
+      then passed to Mapbox to generate tilesets that will be visible on the
+      webpage application. Finally, we could develop a tooltip component to
+      popup with the image of the POI and some associated information.
+    </p>
   </body>
 </html>
